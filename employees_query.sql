@@ -21,11 +21,13 @@ SELECT title AS 'Title', count(*) AS 'Count'
 FROM titles
 JOIN employees 
 ON employees.emp_no = titles.emp_no
+AND titles.to_date = '9999-01-01'
 JOIN dept_emp
 ON employees.emp_no = dept_emp.emp_no
+AND dept_emp.to_date = '9999-01-01'
 JOIN departments 
 ON departments.dept_no = dept_emp.dept_no
-WHERE dept_name = 'customer service' AND dept_emp.to_date = '9999-01-01' AND titles.to_date = '9999-01-01'
+WHERE dept_name = 'customer service' 
 GROUP BY title
 
 -- 4
@@ -39,5 +41,3 @@ JOIN salaries
 ON salaries.emp_no = employees.emp_no
 WHERE dept_manager.to_date = '9999-01-01'
 AND salaries.to_date = '9999-01-01'
-GROUP BY departments.dept_no
-ORDER BY dept_name
