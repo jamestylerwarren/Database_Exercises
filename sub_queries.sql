@@ -38,3 +38,5 @@ WHERE dept_no IN (
 	)
 	AND to_date = '9999-01-01'
 )
+
+
