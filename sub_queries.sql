@@ -1,8 +1,8 @@
 -- 1
 SELECT * 
 FROM employees
-WHERE employees.hire_date IN (
-	SELECT employees.hire_date
+WHERE hire_date IN (
+	SELECT hire_date
 	FROM employees
 	WHERE employees.emp_no = '101010'
 )
@@ -10,8 +10,8 @@ WHERE employees.hire_date IN (
 -- 2
 SELECT title -- or *
 FROM titles
-WHERE titles.emp_no IN (
-	SELECT employees.emp_no
+WHERE emp_no IN (
+	SELECT emp_no
 	FROM employees
 	WHERE employees.first_name = 'Aamod'
 )
@@ -19,10 +19,10 @@ WHERE titles.emp_no IN (
 -- 3
 SELECT *
 FROM dept_manager
-WHERE dept_manager.emp_no IN (
-	SELECT employees.emp_no
+WHERE emp_no IN (
+	SELECT emp_no
 	FROM employees
-	WHERE employees.gender = 'F' AND to_date = '9999-01-01'
+	WHERE gender = 'F' AND to_date = '9999-01-01'
 )
 
 -- BONUS
@@ -38,5 +38,36 @@ WHERE dept_no IN (
 	)
 	AND to_date = '9999-01-01'
 )
+
+
+-- PAY DATA
+
+-- historcical 
+SELECT gender, AVG(salary) AS 'historical average salary' 
+FROM salaries
+JOIN employees ON salaries.emp_no = employees.emp_no
+GROUP BY gender
+
+-- current
+SELECT gender, AVG(salary) AS 'current average salary' 
+FROM salaries
+JOIN employees ON salaries.emp_no = employees.emp_no
+WHERE to_date > now()
+GROUP BY gender
+
+-- historical data for managers
+SELECT gender, AVG(salary) AS 'historical average manager salary' 
+FROM salaries
+JOIN employees ON salaries.emp_no = employees.emp_no
+JOIN dept_manager ON employees.emp_no = dept_manager.emp_no
+GROUP BY gender
+
+-- current data for managers
+SELECT gender, AVG(salary) AS 'current average manager salary' 
+FROM salaries
+JOIN employees ON salaries.emp_no = employees.emp_no
+JOIN dept_manager ON employees.emp_no = dept_manager.emp_no
+WHERE dept_manager.to_date > now()
+GROUP BY gender
 
 
